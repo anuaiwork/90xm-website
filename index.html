@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>90XM — Yaadon Ka Adda</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <!-- YOUTUBE IFRAME API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+</head>
+
+
+<body>
+
+<main class="website">
+
+
+    <!-- =========================================
+         BACKGROUND
+    ========================================== -->
+
+    <div class="background"></div>
+
+
+    <!-- =========================================
+         DARK OVERLAY
+    ========================================== -->
+
+    <div class="overlay"></div>
+
+
+    <!-- =========================================
+         HIDDEN YOUTUBE PLAYER
+
+         YouTube will actually play the songs here.
+    ========================================== -->
+
+    <div
+        id="youtube-player"
+        style="
+            position:absolute;
+            width:1px;
+            height:1px;
+            left:-9999px;
+            top:-9999px;
+            opacity:0;
+            pointer-events:none;
+        "
+    ></div>
+
+
+    <!-- =========================================
+         TOP LEFT LABEL
+    ========================================== -->
+
+    <div class="top-label left-label">
+        REC 90s
+    </div>
+
+
+    <!-- =========================================
+         BRAND
+    ========================================== -->
+
+    <div class="brand">
+
+        <span>90XM</span>
+
+        <small>
+            YAADON KA ADDA
+        </small>
+
+    </div>
+
+
+    <!-- =========================================
+         INTRO TEXT
+    ========================================== -->
+
+    <div class="memory-intro">
+
+        <h1>
+            Har gaana, ek yaad. ❤️
+        </h1>
+
+        <h3>
+            Kuch gaane sirf sune nahi jaate...
+            <br>
+            woh humein wapas wahi le jaate hain.
+        </h3>
+
+    </div>
+
+
+    <!-- =========================================
+         TOP RIGHT LABEL
+    ========================================== -->
+
+    <div class="top-label right-label">
+        REWIND KARO
+    </div>
+
+
+    <!-- =========================================
+         CENTER RADIO + PLAYER
+    ========================================== -->
+
+    <section class="radio-area">
+
+
+        <!-- =====================================
+             RADIO IMAGE
+        ====================================== -->
+
+        <div class="radio-container">
+
+            <img
+                src="images/radio.png"
+                class="radio-image"
+                alt="Vintage Radio"
+            >
+
+        </div>
+
+
+        <!-- =====================================
+             RADIO STATUS
+        ====================================== -->
+
+        <div class="radio-status">
+
+            <span class="status-dot"></span>
+
+            <span id="statusText">
+                READY TO PLAY
+            </span>
+
+        </div>
+
+
+        <!-- =====================================
+             MUSIC PLAYER
+        ====================================== -->
+
+        <div class="player">
+
+
+            <!-- =================================
+                 SONG INFORMATION
+            ================================== -->
+
+            <div class="song-info">
+
+                <div
+                    class="song-title"
+                    id="songTitle"
+                >
+                    90XM Radio
+                </div>
+
+
+                <div
+                    class="song-artist"
+                    id="songArtist"
+                >
+                    YouTube • 90XM
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 LIKE BUTTON
+            ================================== -->
+
+            <button
+                class="heart-button"
+                id="heartButton"
+                onclick="toggleLike()"
+                aria-label="Like song"
+            >
+                ♡
+            </button>
+
+
+            <!-- =================================
+                 WAVEFORM
+            ================================== -->
+
+            <div
+                class="waveform"
+                id="waveform"
+            >
+
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+
+            </div>
+
+
+            <!-- =================================
+                 PROGRESS BAR
+            ================================== -->
+
+            <div class="progress-area">
+
+                <span id="currentTime">
+                    0:00
+                </span>
+
+
+                <input
+                    type="range"
+                    id="progress"
+                    min="0"
+                    max="100"
+                    value="0"
+                    step="0.1"
+                    aria-label="Song progress"
+                >
+
+
+                <span id="totalTime">
+                    0:00
+                </span>
+
+            </div>
+
+
+            <!-- =================================
+                 CONTROLS
+            ================================== -->
+
+            <div class="controls">
+
+
+                <!-- SHUFFLE -->
+
+                <button
+                    class="control-button"
+                    id="shuffleButton"
+                    onclick="toggleShuffle()"
+                    aria-label="Shuffle"
+                    title="Shuffle"
+                >
+                    ⇄
+                </button>
+
+
+                <!-- PREVIOUS -->
+
+                <button
+                    class="control-button"
+                    onclick="previousSong()"
+                    aria-label="Previous song"
+                    title="Previous"
+                >
+                    |◀
+                </button>
+
+
+                <!-- PLAY / PAUSE -->
+
+                <button
+                    class="play-button"
+                    id="playButton"
+                    onclick="togglePlay()"
+                    aria-label="Play"
+                    title="Play / Pause"
+                >
+                    ▶
+                </button>
+
+
+                <!-- NEXT -->
+
+                <button
+                    class="control-button"
+                    onclick="nextSong()"
+                    aria-label="Next song"
+                    title="Next"
+                >
+                    ▶|
+                </button>
+
+
+                <!-- REPEAT -->
+
+                <button
+                    class="control-button"
+                    id="repeatButton"
+                    onclick="toggleRepeat()"
+                    aria-label="Repeat"
+                    title="Repeat"
+                >
+                    ↻
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================
+                 YOUTUBE LABEL
+            ================================== -->
+
+            <div class="youtube-label">
+
+                <span>●</span>
+
+                90XM YOUTUBE RADIO
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =========================================
+         MEMORY NOTE LEFT
+    ========================================== -->
+
+    <div class="memory-note note-left">
+
+        कुछ पुराने गाने,
+        <br>
+        कुछ पुरानी यादें ❤️
+
+    </div>
+
+
+    <!-- =========================================
+         MEMORY NOTE RIGHT
+    ========================================== -->
+
+    <div class="memory-note note-right">
+
+        Zindagi badi honi chahiye,
+        <br>
+        lambi nahi.
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
