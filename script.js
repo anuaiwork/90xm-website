@@ -1,7 +1,6 @@
-/* =====================================================
-   90XM — YAADON KA ADDA
-   YOUTUBE PLAYER
-===================================================== */
+/* =========================================
+   90XM YOUTUBE RADIO
+========================================= */
 
 const PLAYLIST_ID = "PLZFw8xFp3oqg";
 
@@ -12,17 +11,84 @@ let isShuffle = false;
 let isRepeat = false;
 
 
-/* =====================================================
-   YOUTUBE API READY
-===================================================== */
-function onYouTubeIframeAPIReady() {
+/* =========================================
+   LOAD YOUTUBE IFRAME API
+========================================= */
 
-    console.log("YouTube API loaded");
+function loadYouTubeAPI() {
+
+    console.log("Loading YouTube API...");
+
+    if (window.YT && window.YT.Player) {
+
+        console.log("YouTube API already loaded");
+
+        createYouTubePlayer();
+
+        return;
+    }
+
+
+    window.onYouTubeIframeAPIReady = function () {
+
+        console.log("✅ YouTube API READY");
+
+        createYouTubePlayer();
+
+    };
+
+
+    const script =
+        document.createElement("script");
+
+    script.src =
+        "https://www.youtube.com/iframe_api";
+
+    script.async = true;
+
+    script.onerror = function () {
+
+        console.error(
+            "❌ Could not load YouTube API"
+        );
+
+        updateStatus(
+            "YOUTUBE CONNECTION ERROR"
+        );
+
+    };
+
+
+    document
+        .head
+        .appendChild(script);
+
+}
+
+
+/* =========================================
+   CREATE YOUTUBE PLAYER
+========================================= */
+function createYouTubePlayer() {
+
+    console.log("Creating YouTube player...");
+
+    const container = document.getElementById("youtube-player");
+
+    if (!container) {
+        console.error("❌ youtube-player element missing");
+        return;
+    }
+
+    if (!window.YT || !window.YT.Player) {
+        console.error("❌ YT.Player unavailable");
+        return;
+    }
 
     player = new YT.Player("youtube-player", {
 
-        height: "200",
         width: "200",
+        height: "200",
 
         playerVars: {
             listType: "playlist",
@@ -30,30 +96,25 @@ function onYouTubeIframeAPIReady() {
             autoplay: 0,
             controls: 0,
             rel: 0,
-            playsinline: 1
+            playsinline: 1,
+            enablejsapi: 1,
+            origin: window.location.origin
         },
 
         events: {
-            onReady: function (event) {
 
-                console.log("✅ YouTube player READY");
+            onReady: onPlayerReady,
 
-                player = event.target;
-                isReady = true;
+            onStateChange: onPlayerStateChange,
 
-                player.setVolume(100);
+            onError: onPlayerError,
 
-                updateStatus("READY TO PLAY");
-                updateSongInfo();
+            onAutoplayBlocked: onAutoplayBlocked
 
-            },
-
-            onStateChange: youtubeStateChange,
-
-            onError: youtubeError
         }
 
     });
+
 }
 
 
@@ -869,3 +930,9 @@ function formatTime(seconds) {
     );
 
 }
+
+// =========================================
+// START YOUTUBE RADIO
+// =========================================
+
+loadYouTubeAPI();
