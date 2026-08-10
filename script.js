@@ -15,41 +15,45 @@ let isRepeat = false;
 /* =====================================================
    YOUTUBE API READY
 ===================================================== */
-
 function onYouTubeIframeAPIReady() {
 
-    console.log("=================================");
-    console.log("YOUTUBE API READY");
-    console.log("=================================");
+    console.log("YouTube API loaded");
 
     player = new YT.Player("youtube-player", {
 
-        width: "200",
         height: "200",
+        width: "200",
 
         playerVars: {
+            listType: "playlist",
+            list: PLAYLIST_ID,
             autoplay: 0,
             controls: 0,
-            playsinline: 1,
             rel: 0,
-            enablejsapi: 1,
-            origin: window.location.origin
+            playsinline: 1
         },
 
         events: {
+            onReady: function (event) {
 
-            onReady: onPlayerReady,
+                console.log("✅ YouTube player READY");
 
-            onStateChange: onPlayerStateChange,
+                player = event.target;
+                isReady = true;
 
-            onError: onPlayerError,
+                player.setVolume(100);
 
-            onAutoplayBlocked: onAutoplayBlocked
+                updateStatus("READY TO PLAY");
+                updateSongInfo();
 
+            },
+
+            onStateChange: youtubeStateChange,
+
+            onError: youtubeError
         }
 
     });
-
 }
 
 
@@ -107,85 +111,37 @@ function onPlayerReady(event) {
 /* =====================================================
    PLAY / PAUSE
 ===================================================== */
-
 function togglePlay() {
 
-    console.log("=================================");
-    console.log("PLAY BUTTON CLICKED");
-    console.log("=================================");
-
+    console.log("PLAY CLICKED");
+    console.log("player:", player);
+    console.log("isReady:", isReady);
 
     if (!player || !isReady) {
 
-        console.log("PLAYER NOT READY");
+        console.log("❌ YouTube player is NOT ready");
 
-        updateStatus("LOADING...");
+        updateStatus("YOUTUBE LOADING...");
 
         return;
-
     }
 
+    const state = player.getPlayerState();
 
-    const state =
-        player.getPlayerState();
+    console.log("Current state:", state);
 
-
-    console.log(
-        "Current YouTube state:",
-        state
-    );
-
-
-    /* PLAYING */
-
-    if (
-        state ===
-        YT.PlayerState.PLAYING
-    ) {
-
-        console.log("PAUSING");
+    if (state === YT.PlayerState.PLAYING) {
 
         player.pauseVideo();
 
-        return;
-
-    }
-
-
-    /*
-       Everything else:
-       play the currently cued video
-    */
-
-    console.log("PLAYING");
-
-    updateStatus("PLAYING...");
-
-    player.playVideo();
-
-}
-
-
-/* =====================================================
-   NEXT
-===================================================== */
-
-function nextSong() {
-
-    if (!player || !isReady) {
+    } else {
 
         updateStatus("LOADING...");
 
-        return;
+        player.playVideo();
 
     }
-
-    console.log("NEXT SONG");
-
-    player.nextVideo();
-
 }
-
 
 /* =====================================================
    PREVIOUS
