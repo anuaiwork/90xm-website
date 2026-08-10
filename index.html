@@ -48,18 +48,7 @@
          YouTube will actually play the songs here.
     ========================================== -->
 
-    <div
-        id="youtube-player"
-        style="
-            position:absolute;
-            width:1px;
-            height:1px;
-            left:-9999px;
-            top:-9999px;
-            opacity:0;
-            pointer-events:none;
-        "
-    ></div>
+    <div id="youtube-player"></div>
 
 
     <!-- =========================================
@@ -77,7 +66,7 @@
 
     <div class="brand">
 
-        <span>90XM</span>
+        <span>MTV</span>
 
         <small>
             YAADON KA ADDA
@@ -103,6 +92,8 @@
         </h3>
 
     </div>
+
+    
 
 
     <!-- =========================================
@@ -339,6 +330,17 @@
 
             </div>
 
+             <!-- VIEW PLAYLIST BUTTON -->
+            <a
+            href="https://www.youtube.com/playlist?list=PLZFw8xFp3oqg"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="playlist-button"
+            >
+            ▶ VIEW PLAYLIST
+            </a>
+
+           
 
             <!-- =================================
                  YOUTUBE LABEL
@@ -387,13 +389,9 @@
 
 </main>
 
-
-<!-- =========================================
-     JAVASCRIPT
-========================================== -->
+<script src="https://www.youtube.com/iframe_api"></script>
 
 <script src="script.js"></script>
-
 
 </body>
 
