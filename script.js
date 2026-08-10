@@ -121,51 +121,33 @@ function createYouTubePlayer() {
 /* =====================================================
    PLAYER READY
 ===================================================== */
-
 function onPlayerReady(event) {
 
     console.log("=================================");
     console.log("YOUTUBE PLAYER READY");
     console.log("=================================");
 
-    isReady = true;
-
     player = event.target;
+    isReady = true;
 
     player.setVolume(100);
 
     updateStatus("LOADING 90XM...");
 
-
-    /*
-       IMPORTANT
-
-       First CUE the playlist.
-
-       We do NOT automatically play here.
-    */
-
-    player.cuePlaylist({
-
+    // Load the playlist into the player
+    player.loadPlaylist({
         listType: "playlist",
-
         list: PLAYLIST_ID,
-
         index: 0,
-
         startSeconds: 0
-
     });
-
 
     setTimeout(function () {
 
         updateSongInfo();
-
         updateStatus("READY TO PLAY");
 
     }, 1500);
-
 }
 
 
@@ -222,6 +204,23 @@ function previousSong() {
 
     player.previousVideo();
 
+}
+
+/* =====================================================
+   NEXT
+===================================================== */
+function nextSong() {
+
+    if (!player || !isReady) {
+
+        updateStatus("LOADING...");
+
+        return;
+    }
+
+    console.log("NEXT SONG CLICKED");
+
+    player.nextVideo();
 }
 
 
